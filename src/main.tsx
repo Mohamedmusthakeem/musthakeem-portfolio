@@ -1,10 +1,18 @@
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+
 import { createRoot } from 'react-dom/client';
+
 import { Canvas, useFrame } from '@react-three/fiber';
+
+
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion';
+
 import { ArrowUpRight, Check, Command, Download, ExternalLink, Github, Linkedin, Mail, Menu, Moon, Search, Send, Sparkles, Sun, X } from 'lucide-react';
+
 import * as THREE from 'three';
+
 import { achievements, certifications, education, experiences, projects, site, skills } from './data/site';
+
 import './styles.css';
 
 type Project = typeof projects[number];
@@ -73,10 +81,25 @@ function NetworkScene({ reduced = false }: { reduced?: boolean }) {
           <meshBasicMaterial color={i % 7 === 0 ? '#e5f8ff' : '#58baff'} transparent opacity={reduced ? .45 : .78} />
         </mesh>
       ))}
-      {links.map(([a, b], i) => {
-        const geometry = new THREE.BufferGeometry().setFromPoints([a, b]);
-        return <line key={`l-${i}`} geometry={geometry}><lineBasicMaterial color={i % 4 === 0 ? '#bfeeff' : '#58baff'} transparent opacity={reduced ? .06 : .16} /></line>;
-      })}
+     {links.map(([a, b], i) => {
+  const geometry = new THREE.BufferGeometry().setFromPoints([a, b]);
+
+  return (
+    <primitive
+      key={`l-${i}`}
+      object={
+        new THREE.Line(
+          geometry,
+          new THREE.LineBasicMaterial({
+            color: i % 4 === 0 ? '#bfeeff' : '#58baff',
+            transparent: true,
+            opacity: reduced ? 0.06 : 0.16,
+          })
+        )
+      }
+    />
+  );
+})}
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[dust, 3]} />
